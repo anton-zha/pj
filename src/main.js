@@ -2,7 +2,7 @@ let openShopping = document.querySelector('.shopping');
 let closeShopping = document.querySelector('.closeShopping');
 let list = document.querySelector('.list');
 let listCard = document.querySelector('.listCard');
-let body = document.querySelector('.body');
+let body = document.querySelector('body');
 let total = document.querySelector('.total');
 let quantity = document.querySelector('.quantity');
 
@@ -12,42 +12,96 @@ openShopping.addEventListener('click', ()=>{
 closeShopping.addEventListener('click', ()=>{
     body.classList.remove('active');
 })
+
 let products = [
     {
         id: 1,
         name: 'Кава зернова 100% Арабіка “Марагоджип Гватемала”',
-        image: 'https://foodboom.com.ua/wp-content/uploads/2023/11/%D0%BA%D0%B0%D0%B2%D0%B0-1024x344.jpg',
-        price: 200
+        image: '1.PNG',
+        price: 170
     },
     {
         id: 2,
-        name: 'Кава мелена 100% Арабіка “Марагоджип Гватемала”',
-        image: 'https://foodboom.com.ua/wp-content/uploads/2023/06/kofe-molotyi-100-arabyka-marahodzhyp-hvatemalaid-49204607208506_-698d34536c-300x300.jpg',
-        price: 300
+        name: 'Кава зернова 100% Арабіка “Індонезія Суматра”',
+        image: '2.PNG',
+        price: 110
     },
     {
         id: 3,
-        name: 'Кава мелена 100% Робуста “Індія”',
-        image: 'https://foodboom.com.ua/wp-content/uploads/2023/04/kofe-molotyi-100-robusta-yndyiaid-64662496827576_-31d09e91bd-300x300.jpg',
-        price: 300
+        name: 'Кава зернова 100% Арабіка “Тімор”',
+        image: '3.PNG',
+        price: 220
     },
     {
         id: 4,
-        name: 'Кава мелена 100% Арабіка “Гондурас Високогірний”',
-        image: 'https://foodboom.com.ua/wp-content/uploads/2023/04/kofe-molotyi-100-arabyka-honduras-vysokohornyiid-28363872636184_-454ff6cab9-300x300.jpg',
-        price: 200
+        name: 'Чорний чай “Ерл Грей з Бергамотом”',
+        image: '4.PNG',
+        price: 140
     },
+    {
+        id: 5,
+        name: 'Чорний чай “Саусеп Маракуйя”',
+        image: '5.PNG',
+        price: 320
+    },
+    {
+        id: 6,
+        name: 'Чорний чай “Бризки Шампанського”',
+        image: '6.PNG',
+        price: 120
+    }
 ];
-let listCards = [];
+let listCards  = [];
 function initApp(){
-    products.forEach((value, key)=>{
+    products.forEach((value, key) =>{
         let newDiv = document.createElement('div');
+        newDiv.classList.add('item');
         newDiv.innerHTML = `
-            <img src="image/${value.image}"/>
+            <img src="image/${value.image}">
             <div class="title">${value.name}</div>
             <div class="price">${value.price.toLocaleString()}</div>
-        `;
+            <button onclick="addToCard(${key})">Додати до корзини</button>`;
         list.appendChild(newDiv);
     })
 }
 initApp();
+function addToCard(key){
+    if(listCards[key] == null){
+        listCards[key] = JSON.parse(JSON.stringify(products[key]));
+        listCards[key].quantity = 1;
+    }
+    reloadCard();
+}
+function reloadCard(){
+    listCard.innerHTML = '';
+    let count = 0;
+    let totalPrice = 0;
+    listCards.forEach((value, key)=>{
+        totalPrice = totalPrice + value.price;
+        count = count + value.quantity;
+        if(value != null){
+            let newDiv = document.createElement('li');
+            newDiv.innerHTML = `
+                <div><img src="image/${value.image}"/></div>
+                <div>${value.name}</div>
+                <div>${value.price.toLocaleString()}</div>
+                <div>
+                    <button onclick="changeQuantity(${key}, ${value.quantity - 1})">-</button>
+                    <div class="count">${value.quantity}</div>
+                    <button onclick="changeQuantity(${key}, ${value.quantity + 1})">+</button>
+                </div>`;
+                listCard.appendChild(newDiv);
+        }
+    })
+    total.innerText = totalPrice.toLocaleString();
+    quantity.innerText = count;
+}
+function changeQuantity(key, quantity){
+    if(quantity == 0){
+        delete listCards[key];
+    }else{
+        listCards[key].quantity = quantity;
+        listCards[key].price = quantity * products[key].price;
+    }
+    reloadCard();
+}
