@@ -17,37 +17,37 @@ let products = [
     {
         id: 1,
         name: 'Кава зернова 100% Арабіка “Марагоджип Гватемала”',
-        image: '1.PNG',
+        image: 'img/1.PNG',
         price: 170
     },
     {
         id: 2,
         name: 'Кава зернова 100% Арабіка “Індонезія Суматра”',
-        image: '2.PNG',
+        image: 'img/2.PNG',
         price: 110
     },
     {
         id: 3,
         name: 'Кава зернова 100% Арабіка “Тімор”',
-        image: '3.PNG',
+        image: 'img/3.PNG',
         price: 220
     },
     {
         id: 4,
         name: 'Чорний чай “Ерл Грей з Бергамотом”',
-        image: '4.PNG',
+        image: 'img/4.PNG',
         price: 140
     },
     {
         id: 5,
         name: 'Чорний чай “Саусеп Маракуйя”',
-        image: '5.PNG',
+        image: 'img/5.PNG',
         price: 320
     },
     {
         id: 6,
         name: 'Чорний чай “Бризки Шампанського”',
-        image: '6.PNG',
+        image: 'img/6.PNG',
         price: 120
     }
 ];
@@ -57,7 +57,7 @@ function initApp(){
         let newDiv = document.createElement('div');
         newDiv.classList.add('item');
         newDiv.innerHTML = `
-            <img src="image/${value.image}">
+            <img src="${value.image}">
             <div class="title">${value.name}</div>
             <div class="price">${value.price.toLocaleString()}</div>
             <button onclick="addToCard(${key})">Додати до корзини</button>`;
